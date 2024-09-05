@@ -62,7 +62,8 @@
 
             //monta a tabela de registros
             function carregaTabela() {
-                $("#tb_registros tbody").empty();
+
+               $("#tb_registros tbody").empty();
 
                 $.ajax({
                     type: 'POST',
@@ -71,16 +72,13 @@
                     dataType: 'json',
                     success: function (resposta) {
 
-                        console.log(resposta);
+                        // console.log(resposta);
 
                         if (resposta.success) {
 
-
-
                             $.each(resposta.resposta, function (k, v) {
 
-                                console.log(v)
-
+                        
                                 if (typeof v === 'object' && v !== null) {
 
                                     $("#tb_registros tbody").append(`
@@ -102,7 +100,7 @@
                                     console.log("O valor não é um objeto ou array:", v);
                                 }
                             });
-                            
+
 
                         } else {
                             console.error("Erro na consulta", resposta);
@@ -136,6 +134,7 @@
 
                     dataType: 'json',
                     success: function (resposta) {
+                        // console.log(resposta)
                         if (resposta.success) {
                             alert(resposta.mensagem);
                             carregaTabela();

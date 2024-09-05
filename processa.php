@@ -31,8 +31,11 @@ if ($_REQUEST['acao'] == "cadastrar") {
     ];
 
     $ultimoId = executarQuery($sql, $params);
-   
-    echo "Novo ID inserido: " . $ultimoId;
 
     echo json_encode(['success' => true, 'mensagem' => "Novo ID inserido: " . $ultimoId], JSON_FORCE_OBJECT);
+}
+
+if ($_REQUEST['acao'] == "excluir") {
+   //comando para excluir item do banco de dados
+   //DELETE FROM pessoas WHER id=  
 }
