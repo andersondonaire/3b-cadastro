@@ -63,7 +63,7 @@
             //monta a tabela de registros
             function carregaTabela() {
 
-               $("#tb_registros tbody").empty();
+                $("#tb_registros tbody").empty();
 
                 $.ajax({
                     type: 'POST',
@@ -78,7 +78,7 @@
 
                             $.each(resposta.resposta, function (k, v) {
 
-                        
+
                                 if (typeof v === 'object' && v !== null) {
 
                                     $("#tb_registros tbody").append(`
@@ -90,7 +90,7 @@
                                             <td>${v.email}</td>
                                             <td>
                                                 <a>editar</a> - 
-                                                <a>excluir</a>  
+                                                <a href="#" id="btn-excluir" data="${v.id}">excluir</a>  
                                             </td>
                                         </tr>
                                     
@@ -143,6 +143,12 @@
                         }
                     }
                 })
+            })
+
+            $("#tb_registros tbody").on("click","#btn-excluir",function () {
+                event.preventDefault();
+                let id = $(this).attr("data");
+                console.log(id);
             })
         })
 
