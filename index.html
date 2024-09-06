@@ -70,13 +70,13 @@
                     url: './processa.php',
                     data: { "acao": "selectTabela" },
                     dataType: 'json',
-                    success: function (resposta) {
+                    success: function (result) {
 
                         // console.log(resposta);
 
-                        if (resposta.success) {
+                        if (result.success) {
 
-                            $.each(resposta.resposta, function (k, v) {
+                            $.each(result.resposta, function (k, v) {
 
 
                                 if (typeof v === 'object' && v !== null) {
@@ -145,10 +145,28 @@
                 })
             })
 
-            $("#tb_registros tbody").on("click","#btn-excluir",function () {
+            $("#tb_registros tbody").on("click", "#btn-excluir", function () {
                 event.preventDefault();
                 let id = $(this).attr("data");
-                console.log(id);
+
+                $.ajax({
+                    type: 'POST',
+                    url: './processa.php',
+                    data: {
+                        "acao": "excluir",
+                        "id": id
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        // console.log(resposta)
+                        if (result.success) {
+                            alert(result.mensagem);
+                            carregaTabela();
+                        } else {
+                            alert("erro no arquivo processa.php");
+                        }
+                    }
+                })
             })
         })
 

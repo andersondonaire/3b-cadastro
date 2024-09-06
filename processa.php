@@ -36,6 +36,18 @@ if ($_REQUEST['acao'] == "cadastrar") {
 }
 
 if ($_REQUEST['acao'] == "excluir") {
-   //comando para excluir item do banco de dados
-   //DELETE FROM pessoas WHER id=  
+    //comando para excluir item do banco de dados
+    //DELETE FROM pessoas WHER id=  
+
+    $id = $_POST['id'];
+
+    $q = "DELETE FROM pessoas WHERE id = :id";
+    $params = [
+        ':id' => $id
+    ];
+
+    executarQuery($q, $params);
+
+    echo json_encode(['success' => true, 'mensagem' => "O registro de número {$id} foi excluído"], JSON_FORCE_OBJECT);
+
 }
