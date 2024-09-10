@@ -72,16 +72,11 @@
                     dataType: 'json',
                     success: function (result) {
 
-                        // console.log(resposta);
-
                         if (result.success) {
 
                             $.each(result.resposta, function (k, v) {
 
-
-                                if (typeof v === 'object' && v !== null) {
-
-                                    $("#tb_registros tbody").append(`
+                                $("#tb_registros tbody").append(`
 
                                         <tr>
                                             <td>${v.id}</td>
@@ -96,9 +91,6 @@
                                     
                                         `);
 
-                                } else {
-                                    console.log("O valor não é um objeto ou array:", v);
-                                }
                             });
 
 

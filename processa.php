@@ -8,8 +8,8 @@ if ($_REQUEST['acao'] == "selectTabela") {
     $sql = "SELECT * FROM pessoas";
     $params = null;
     $resultados = executarQuery($sql, $params, true);
-    var_dump($resultados);
     if ($resultados) {
+        header("Content-type: application/json; charset=utf-8");
         echo json_encode(['success' => true, 'resposta' => $resultados], JSON_FORCE_OBJECT);
     } else {
         echo json_encode(['success' => false, 'resposta' => "erro na consulta"]);
