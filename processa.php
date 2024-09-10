@@ -51,3 +51,15 @@ if ($_REQUEST['acao'] == "excluir") {
     echo json_encode(['success' => true, 'mensagem' => "O registro de número {$id} foi excluído"], JSON_FORCE_OBJECT);
 
 }
+
+if($_REQUEST['acao'] == "selectEdita"){
+    $id = $_POST['id'];
+
+    $query =  "SELECT * FROM pessoas WHERE id = :id";
+    
+    $params = [
+        ':id' => $id
+    ];
+    $r = executarQuery($q, $params);
+
+}

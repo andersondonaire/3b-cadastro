@@ -84,7 +84,7 @@
                                             <td>${v.telefone}</td>
                                             <td>${v.email}</td>
                                             <td>
-                                                <a>editar</a> - 
+                                                <a href="#" id="btn-editar" data="${v.id}">editar</a> - 
                                                 <a href="#" id="btn-excluir" data="${v.id}">excluir</a>  
                                             </td>
                                         </tr>
@@ -160,6 +160,33 @@
                     }
                 })
             })
+
+            $("#tb_registros tbody").on("click","btn-editar",function(){
+                
+                
+                let id = $(this).attr("data");
+
+                
+                $.ajax({
+                    type: 'POST',
+                    url: './processa.php',
+                    data: {
+                        "acao": "selectEdita",
+                        "id": id
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        // console.log(resposta)
+                        if (result.success) {
+                            alert(result.mensagem);
+                            carregaTabela();
+                        } else {
+                            alert("erro no arquivo processa.php");
+                        }
+                    }
+                })
+            })
+
         })
 
 
