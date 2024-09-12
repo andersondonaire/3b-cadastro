@@ -161,12 +161,11 @@
                 })
             })
 
-            $("#tb_registros tbody").on("click","btn-editar",function(){
-                
-                
+            $("#tb_registros tbody").on("click", "#btn-editar", function () {
+
+             
                 let id = $(this).attr("data");
 
-                
                 $.ajax({
                     type: 'POST',
                     url: './processa.php',
@@ -176,10 +175,11 @@
                     },
                     dataType: 'json',
                     success: function (result) {
-                        // console.log(resposta)
+
+                        console.log(result);
+                        
                         if (result.success) {
-                            alert(result.mensagem);
-                            carregaTabela();
+                           
                         } else {
                             alert("erro no arquivo processa.php");
                         }

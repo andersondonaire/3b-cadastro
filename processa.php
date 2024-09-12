@@ -1,6 +1,7 @@
 <?php
 
 include "./conexao.php";
+header("Content-type: application/json; charset=utf-8");
 
 //retorna todos os dados da tabela pessoas
 if ($_REQUEST['acao'] == "selectTabela") {
@@ -9,7 +10,7 @@ if ($_REQUEST['acao'] == "selectTabela") {
     $params = null;
     $resultados = executarQuery($sql, $params, true);
     if ($resultados) {
-        header("Content-type: application/json; charset=utf-8");
+
         echo json_encode(['success' => true, 'resposta' => $resultados], JSON_FORCE_OBJECT);
     } else {
         echo json_encode(['success' => false, 'resposta' => "erro na consulta"]);
@@ -53,6 +54,7 @@ if ($_REQUEST['acao'] == "excluir") {
 }
 
 if($_REQUEST['acao'] == "selectEdita"){
+
     $id = $_POST['id'];
 
     $query =  "SELECT * FROM pessoas WHERE id = :id";
@@ -60,6 +62,9 @@ if($_REQUEST['acao'] == "selectEdita"){
     $params = [
         ':id' => $id
     ];
-    $r = executarQuery($q, $params);
+
+    $r = executarQuery($query, $params,true);
+
+    echo json_encode(['success' => true, 'result' =>$r], JSON_FORCE_OBJECT);
 
 }
