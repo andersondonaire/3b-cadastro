@@ -11,15 +11,15 @@
 
 <body>
     <div class="container mt-5">
-        <h2>Formulário de Cadastro</h2>
         <form id="formCadastro" action="./" method="post">
+            <h2>Formulário de Cadastro</h2>
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="name" name="nome" placeholder="Digite seu nome" required>
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Telefone</label>
-                <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="Digite seu telefone"
+                <input type="tel" class="form-control" id="fone" name="telefone" placeholder="Digite seu telefone"
                     required>
             </div>
             <div class="mb-3">
@@ -28,9 +28,32 @@
                     required>
             </div>
 
-            <input type="hidden" name="acao" value="cadastrar">
+            <input type="hidden" name="id" id="idRegistro">
 
-            <button type="submit" class="btn btn-primary"> Cadastrar</button>
+            <button type="submit" class="btn btn-primary" id="btn-cadastro"> Cadastrar</button>
+        </form>
+
+
+        <form id="formEdita" action="./" method="post" style="display:none">
+            <h2>Formulário de Edição</h2>
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="name" name="nome" placeholder="Digite seu nome" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Telefone</label>
+                <input type="tel" class="form-control" id="fone" name="telefone" placeholder="Digite seu telefone"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu e-mail"
+                    required>
+            </div>
+
+            <input type="hidden" name="id" id="idRegistro">
+
+            <button type="submit" class="btn btn-primary" id="btn-cadastro"> Salvar</button>
         </form>
 
         <hr>
@@ -152,8 +175,10 @@
                     success: function (result) {
                         // console.log(resposta)
                         if (result.success) {
-                            alert(result.mensagem);
-                            carregaTabela();
+                            if (result.mensagem > 0) {
+                                alert("Registro inserido com sucesso! ");
+                                carregaTabela();
+                            }
                         } else {
                             alert("erro no arquivo processa.php");
                         }
@@ -163,7 +188,7 @@
 
             $("#tb_registros tbody").on("click", "#btn-editar", function () {
 
-             
+
                 let id = $(this).attr("data");
 
                 $.ajax({
@@ -174,18 +199,56 @@
                         "id": id
                     },
                     dataType: 'json',
-                    success: function (result) {
+                    success: function (data) {
+                        if (data.success) {
 
-                        console.log(result);
-                        
-                        if (result.success) {
-                           
+                            $('#formEdita #name').val(data.result[0].nome);
+                            $('#formEdita #fone').val(data.result[0].telefone);
+                            $('#formEdita #email').val(data.result[0].email);
+                            $('#formEdita #idRegistro').val(data.result[0].id);
+
+                            $('#formCadastro').hide();
+                            $('#formEdita').show();
                         } else {
                             alert("erro no arquivo processa.php");
                         }
                     }
                 })
             })
+
+            $('#formEdita').on('submit', function (event) {
+
+                event.preventDefault(); // Impedir o envio padrão do formulário
+
+                let nome = $("#formEdita #name").val();
+                let telefone = $("#formEdita #telefone").val();
+                let email = $("#formEdita #email").val();
+                let id = $("#formEdita #idRegistro").val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: './processa.php',
+                    data: {
+                        "acao": "editar",
+                        "nome": nome,
+                        "telefone": telefone,
+                        "email": email,
+                        "id": id
+                    },
+
+                    dataType: 'json',
+                    success: function (resposta) {
+                        // console.log(resposta)
+                        if (result.mensagem > 0) {
+                            alert("Registro alterado com sucesso! ");
+                            carregaTabela();
+                        } else {
+                            alert("erro ao cadastrar");
+                        }
+                    }
+                })
+            })
+
 
         })
 

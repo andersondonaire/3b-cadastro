@@ -50,21 +50,36 @@ if ($_REQUEST['acao'] == "excluir") {
     executarQuery($q, $params);
 
     echo json_encode(['success' => true, 'mensagem' => "O registro de número {$id} foi excluído"], JSON_FORCE_OBJECT);
-
 }
 
-if($_REQUEST['acao'] == "selectEdita"){
+if ($_REQUEST['acao'] == "selectEdita") {
 
     $id = $_POST['id'];
 
     $query =  "SELECT * FROM pessoas WHERE id = :id";
-    
+
     $params = [
         ':id' => $id
     ];
 
-    $r = executarQuery($query, $params,true);
+    $r = executarQuery($query, $params, true);
 
-    echo json_encode(['success' => true, 'result' =>$r], JSON_FORCE_OBJECT);
+    echo json_encode(['success' => true, 'result' => $r], JSON_FORCE_OBJECT);
+}
 
+if ($_REQUEST['acao'] == "editar") {
+
+    $nome = $_POST['nome'];
+    $telefone = $_POST['telefone'];
+    $email = $_POST['email'];
+    $id = $_POST['id'];
+
+    // Editar um registro na tabela 'pessoas'
+    $sql = "UPDATE `pessoas` SET `nome`='{$nome}',`telefone`='{$telefone}',`email`='{$email}' WHERE id={$id}";
+
+    $r = executarQuery($sql, $params);
+
+
+
+    echo json_encode(['success' => true, 'retorno' => ($r > 0)? $r : "0"], JSON_FORCE_OBJECT);
 }

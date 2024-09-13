@@ -31,6 +31,7 @@ function executarQuery($sql, $params = [], $retornaResultados = false)
 
         // Retorna o número de linhas afetadas para UPDATE e DELETE
         return $stmt->rowCount();
+        
     } catch (PDOException $e) {
         // Em caso de erro, exibe a mensagem
         echo "Erro: " . $e->getMessage();
