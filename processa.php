@@ -1,23 +1,29 @@
 <?php
 
 include "./conexao.php";
+// var_dump($_REQUEST);
+
+// Verifica a ação recebida via POST em JSON
+$requestPayload = file_get_contents('php://input');
+$data = json_decode($requestPayload, true); // Decodifica o JSON para um array PHP
+
 header("Content-type: application/json; charset=utf-8");
 
 //retorna todos os dados da tabela pessoas
-if ($_REQUEST['acao'] == "selectTabela") {
+if ($data['acao'] == "selectTabela") {
 
     $sql = "SELECT * FROM pessoas";
     $params = null;
     $resultados = executarQuery($sql, $params, true);
-    if ($resultados) {
 
-        echo json_encode(['success' => true, 'resposta' => $resultados], JSON_FORCE_OBJECT);
+    if ($resultados) {
+        echo json_encode(['success' => true, 'resposta' => $resultados]);
     } else {
         echo json_encode(['success' => false, 'resposta' => "erro na consulta"]);
     }
 }
 
-if ($_REQUEST['acao'] == "cadastrar") {
+if ($data['acao'] == "cadastrar") {
 
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
@@ -36,7 +42,7 @@ if ($_REQUEST['acao'] == "cadastrar") {
     echo json_encode(['success' => true, 'mensagem' => "Novo ID inserido: " . $ultimoId], JSON_FORCE_OBJECT);
 }
 
-if ($_REQUEST['acao'] == "excluir") {
+if ($data['acao'] == "excluir") {
     //comando para excluir item do banco de dados
     //DELETE FROM pessoas WHER id=  
 
@@ -52,7 +58,7 @@ if ($_REQUEST['acao'] == "excluir") {
     echo json_encode(['success' => true, 'mensagem' => "O registro de número {$id} foi excluído"], JSON_FORCE_OBJECT);
 }
 
-if ($_REQUEST['acao'] == "selectEdita") {
+if ($data['acao'] == "selectEdita") {
 
     $id = $_POST['id'];
 
@@ -67,7 +73,7 @@ if ($_REQUEST['acao'] == "selectEdita") {
     echo json_encode(['success' => true, 'result' => $r], JSON_FORCE_OBJECT);
 }
 
-if ($_REQUEST['acao'] == "editar") {
+if ($data['acao'] == "editar") {
 
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
@@ -78,8 +84,6 @@ if ($_REQUEST['acao'] == "editar") {
     $sql = "UPDATE `pessoas` SET `nome`='{$nome}',`telefone`='{$telefone}',`email`='{$email}' WHERE id={$id}";
 
     $r = executarQuery($sql, $params);
-
-
 
     echo json_encode(['success' => true, 'retorno' => ($r > 0)? $r : "0"], JSON_FORCE_OBJECT);
 }

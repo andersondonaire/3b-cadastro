@@ -66,9 +66,7 @@
                 <th>Email</th>
                 <th>Ações</th>
             </tr>
-            <tbody>
-
-            </tbody>
+            <tbody class="tbody"></tbody>
 
         </table>
     </div>
@@ -205,50 +203,57 @@
                 })
             })
 
-            //monta a tabela de registros
-            function carregaTabela() {
+            async function carregaTabela() {
+                // Limpa o tbody antes de carregar os registros
+                $("#tb_registros .tbody").empty();
 
-                $("#tb_registros tbody").empty();
+                try {
+                    const response = await fetch('./processa.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            acao: "selectTabela"
+                        })
+                    });
 
-                $.ajax({
-                    type: 'POST',
-                    url: './processa.php',
-                    data: { "acao": "selectTabela" },
-                    dataType: 'json',
-                    success: function (result) {
+                    const result = await response.json();
 
-                        if (result.success) {
+                    if (result.success) {
 
-                            $.each(result.resposta, function (k, v) {
+                        let html = '';
 
-                                $("#tb_registros tbody").append(`
+                        // Percorre os registros retornados e monta as linhas da tabela
+                        $.each(result.resposta, (k, v) => {
+                            console.log(v)
+                            html += `<tr>
+                                        <td>${v.id}</td>
+                                        <td>${v.nome}</td>
+                                        <td>${v.telefone}</td>
+                                        <td>${v.email}</td>
+                                        <td>
+                                            <a href="#" id="btn-editar" data-id="${v.id}">editar</a> - 
+                                            <a href="#" id="btn-excluir" data-id="${v.id}">excluir</a>  
+                                        </td>
+                                    </tr>`;
+                        });
 
-                        <tr>
-                            <td>${v.id}</td>
-                            <td>${v.nome}</td>
-                            <td>${v.telefone}</td>
-                            <td>${v.email}</td>
-                            <td>
-                                <a href="#" id="btn-editar" data="${v.id}">editar</a> - 
-                                <a href="#" id="btn-excluir" data="${v.id}">excluir</a>  
-                            </td>
-                        </tr>
-                    
-                        `);
+                        $("#tb_registros .tbody").html(html);
+                    } else {
 
-                            });
+                        console.error("Erro na consulta", result);
 
-
-                        } else {
-                            console.error("Erro na consulta", resposta);
-                        }
-                    },
-                    error: function () {
-                        console.error("Erro no ajax");
                     }
-                });
+                } catch (error) {
+
+                    console.error("Erro na requisição:", error);
+
+                }
             }
 
+
+            carregaTabela();
             carregaTabela();
 
 
