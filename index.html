@@ -15,7 +15,7 @@
             <h2>Formulário de Cadastro</h2>
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="name" name="nome" placeholder="Digite seu nome" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu nome" required>
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Telefone</label>
@@ -90,27 +90,15 @@
                 let telefone = $("#telefone").val();
                 let email = $("#email").val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: './processa.php',
-                    data: {
-                        "acao": "cadastrar",
-                        "nome": nome,
-                        "telefone": telefone,
-                        "email": email
-                    },
+                let resultado = cadastrar(nome,telefone,email);
 
-                    dataType: 'json',
-                    success: function (resposta) {
-                        // console.log(resposta)
-                        if (resposta.success) {
-                            alert(resposta.mensagem);
-                            carregaTabela();
-                        } else {
-                            alert("erro ao cadastrar");
-                        }
-                    }
-                })
+                if(resultado){
+                    alert("Registro cadastrado com sucesso!")
+                    carregaTabela();
+                }else{
+                    alert("Cadastro não foi executado!");
+                }
+
             })
             
             // exclui registro
@@ -231,7 +219,7 @@
 
                         // Percorre os registros retornados e monta as linhas da tabela
                         $.each(result.resposta, (k, v) => {
-                            console.log(v)
+                            
                             html += `<tr>
                                         <td>${v.id}</td>
                                         <td>${v.nome}</td>
@@ -254,6 +242,33 @@
 
                     console.error("Erro na requisição:", error);
 
+                }
+            }
+
+            async function cadastrar(nome, telefone, email){
+                try {
+                    const response = await fetch('./processa.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            acao: "cadastrar",
+                            nome: nome,
+                            telefone : telefone,
+                            email : email
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } catch (error) {
+                    console.error("Erro: ", error)
                 }
             }
             
