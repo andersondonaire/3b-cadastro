@@ -25,9 +25,9 @@ if ($data['acao'] == "selectTabela") {
 
 if ($data['acao'] == "cadastrar") {
 
-    $nome = $_POST['nome'];
-    $telefone = $_POST['telefone'];
-    $email = $_POST['email'];
+    $nome = $data['nome'];
+    $telefone = $data['telefone'];
+    $email = $data['email'];
 
     // Insere um novo registro na tabela 'pessoas'
     $sql = "INSERT INTO pessoas (nome, telefone, email) VALUES (:nome, :telefone, :email)";
@@ -46,7 +46,7 @@ if ($data['acao'] == "excluir") {
     //comando para excluir item do banco de dados
     //DELETE FROM pessoas WHER id=  
 
-    $id = $_POST['id'];
+    $id = $data['id'];
 
     $q = "DELETE FROM pessoas WHERE id = :id";
     $params = [
@@ -60,7 +60,7 @@ if ($data['acao'] == "excluir") {
 
 if ($data['acao'] == "selectEdita") {
 
-    $id = $_POST['id'];
+    $id = $data['id'];
 
     $query =  "SELECT * FROM pessoas WHERE id = :id";
 
@@ -75,10 +75,10 @@ if ($data['acao'] == "selectEdita") {
 
 if ($data['acao'] == "editar") {
 
-    $nome = $_POST['nome'];
-    $telefone = $_POST['telefone'];
-    $email = $_POST['email'];
-    $id = $_POST['id'];
+    $nome = $data['nome'];
+    $telefone = $data['telefone'];
+    $email = $data['email'];
+    $id = $data['id'];
 
     // Editar um registro na tabela 'pessoas'
     $sql = "UPDATE `pessoas` SET `nome`='{$nome}',`telefone`='{$telefone}',`email`='{$email}' WHERE id={$id}";
