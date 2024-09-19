@@ -81,6 +81,7 @@
 
         $(function () {
 
+            // cadastra registro
             $('#formCadastro').on('submit', function (event) {
 
                 event.preventDefault(); // Impedir o envio padrão do formulário
@@ -111,7 +112,8 @@
                     }
                 })
             })
-
+            
+            // exclui registro
             $("#tb_registros tbody").on("click", "#btn-excluir", function () {
                 event.preventDefault();
                 let id = $(this).attr("data");
@@ -138,6 +140,7 @@
                 })
             })
 
+            // alimenta form para editar
             $("#tb_registros tbody").on("click", "#btn-editar", function () {
 
 
@@ -170,6 +173,7 @@
                 })
             })
 
+            // edita registro
             $('#formEdita').on('submit', function (event) {
 
                 event.preventDefault(); // Impedir o envio padrão do formulário
@@ -203,6 +207,7 @@
                 })
             })
 
+            // função para carregar tabela
             async function carregaTabela() {
                 // Limpa o tbody antes de carregar os registros
                 $("#tb_registros .tbody").empty();
@@ -251,6 +256,8 @@
 
                 }
             }
+            
+            // carrega a tabela de registros
             carregaTabela();
         })
 
